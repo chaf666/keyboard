@@ -1,14 +1,15 @@
 import tkinter as tk
 from functools import partial
 
+def key_press(event):
+    if event.keysym == 'KP_1':
+        print("NumPad 1 pressed")
+    elif event.keysym == '1':
+        print("Top 1 pressed")
 class KeyboardApp:
     def __init__(self, root):
         self.root = root
-        root.title("Virtual Keyboard")
-class KeyboardApp:
-    def __init__(self, root):
-        self.root = root
-        root.title("Virtual Keyboard")
+        root.title("KeyboardTester")
 
         # Установка цвета фона основного окна
         root.configure(bg="lightblue")
@@ -20,7 +21,7 @@ class KeyboardApp:
 
         # Установка цвета фона фрейма клавиатуры
         self.keyboard_frame = tk.Frame(root, bg="lightblue")
-        self.keyboard_frame.pack(padx=10, pady=10)
+        self.keyboard_frame.pack(padx=125, pady=50)
 
         self.create_reset_button()
         self.create_exit_button()
@@ -36,7 +37,7 @@ class KeyboardApp:
         layout_menu.add_command(label="80%", command=partial(self.draw_layout, '80'))
         layout_menu.add_command(label="100%", command=partial(self.draw_layout, '100'))
 
-        menubar.add_cascade(label="Layout", menu=layout_menu)
+        menubar.add_cascade(label="Format", menu=layout_menu)
         self.root.config(menu=menubar)
 
     def draw_layout(self, layout_percentage):
@@ -59,6 +60,7 @@ class KeyboardApp:
                 self.keyboard_frame,
                 text=keydata['key'],
                 width=keydata['width'] * 1,  # ширина в пикселях
+
                 bg="white",
                 font=("Helvetica", 16),
                 relief="solid",
@@ -66,6 +68,7 @@ class KeyboardApp:
                 command=partial(self.on_click_event, key)
             )
             lbl.grid(row=keydata['row'], column=keydata['col'], columnspan=keydata['width'], sticky="nsew")
+
             lbl.config(height=height)
             self.key_widgets[key] = lbl
 
@@ -91,10 +94,20 @@ class KeyboardApp:
         self.pressed_keys.clear()
 
     def get_key_str(self, event):
-        # Проверяем, является ли символ обычной буквой или цифрой, вне зависимости от раскладки
         if event.char.isalnum():
             return event.char.lower()
+
         special_keys = {
+            'k0': '0',
+            'k1': '1',
+            '2': '2',
+            '3': '3',
+            '4': '4',
+            '5': '5',
+            '6': '6',
+            '7': '7',
+            '8': '8',
+            '9': '9',
             'Shift_L': 'shift',
             'Shift_R': 'rshift',
             'Control_L': 'ctrl',
@@ -121,7 +134,7 @@ class KeyboardApp:
             'period': '.',
             'F11': 'f11',
             'F12': 'f12',
-            'Up':  '↑',
+            'Up': '↑',
             'Down': '↓',
             'Right': '→',
             'Left': '←',
@@ -131,7 +144,27 @@ class KeyboardApp:
             'Prior': 'pgup',
             'Next': 'pgdn',
             'Print': 'prtsc',
-            'Kp_Lock': 'num'
+            'kp0': '0',
+            'kp1': '1',
+            'num_2': 'n2',
+            'num_3': 'n3',
+            'num_4': 'n4',
+            'num_5': 'n5',
+            'kp_6': '6',
+            'num_7': 'n7',
+            'num_8': 'n8',
+            'num_9': 'n9',
+            'num_Divide': 'divide',
+            'num_Multiply': 'multiply',
+            'num_Subtract': 'subtract',
+            'num_Add': 'add',
+            'asterisk': '*',
+            'num_Enter': 'enter',
+            'num_Decimal': 'decimal',
+            'Num_Lock': 'lock',
+            'num_plus': '+',
+            'App': 'menu'
+
         }
 
         return special_keys.get(event.keysym, str(event.keysym).lower())
@@ -219,6 +252,7 @@ class KeyboardApp:
                 {'key': 'Alt', 'row': 4, 'col': 8, 'width': 4},
                 {'key': 'Space', 'row': 4, 'col': 12, 'width': 20},
                 {'key': 'RAlt', 'row': 4, 'col': 31, 'width': 3},
+
                 {'key': 'Fn', 'row': 4, 'col': 34, 'width': 3},
                 {'key': 'RCtrl', 'row': 4, 'col': 37, 'width': 4},
                 {'key': '←', 'row': 4, 'col': 41, 'width': 3},
@@ -281,37 +315,38 @@ class KeyboardApp:
                    {'key': 'D', 'row': 3, 'col': 11, 'width': 3},
                    {'key': 'F', 'row': 3, 'col': 14, 'width': 3},
                    {'key': 'G', 'row': 3, 'col': 17, 'width': 3},
+
                    {'key': 'H', 'row': 3, 'col': 20, 'width': 3},
-                    {'key': 'J', 'row': 3, 'col': 23, 'width': 3},
-                    {'key': 'K', 'row': 3, 'col': 26, 'width': 3},
-                    {'key': 'L', 'row': 3, 'col': 29, 'width': 3},
-                    {'key': ';', 'row': 3, 'col': 32, 'width': 3},
-                    {'key': "'", 'row': 3, 'col': 35, 'width': 3},
-                    {'key': 'Enter', 'row': 3, 'col': 38, 'width': 9},
-                    {'key': 'Shift', 'row': 4, 'col': 0, 'width': 7},
-                    {'key': 'Z', 'row': 4, 'col': 7, 'width': 3},
-                    {'key': 'X', 'row': 4, 'col': 10, 'width': 3},
-                    {'key': 'C', 'row': 4, 'col': 13, 'width': 3},
-                    {'key': 'V', 'row': 4, 'col': 16, 'width': 3},
-                    {'key': 'B', 'row': 4, 'col': 19, 'width': 3},
-                    {'key': 'N', 'row': 4, 'col': 22, 'width': 3},
-                    {'key': 'M', 'row': 4, 'col': 25, 'width': 3},
-                    {'key': ',', 'row': 4, 'col': 28, 'width': 3},
-                    {'key': '.', 'row': 4, 'col': 31, 'width': 3},
-                    {'key': '/', 'row': 4, 'col': 34, 'width': 3},
-                    {'key': 'RShift', 'row': 4, 'col': 37, 'width': 10},
-                    {'key': '↑', 'row': 4, 'col': 57, 'width': 3},
-                    {'key': 'Ctrl', 'row': 5, 'col': 0, 'width': 4},
-                    {'key': 'Win', 'row': 5, 'col': 4, 'width': 4},
-                    {'key': 'Alt', 'row': 5, 'col': 8, 'width': 4},
-                    {'key': 'Space', 'row': 5, 'col': 12, 'width': 20},
-                    {'key': 'RAlt', 'row': 5, 'col': 31, 'width': 3},
-                    {'key': 'Fn', 'row': 5, 'col': 38, 'width': 3},
-                    {'key': 'Menu', 'row': 5, 'col': 34, 'width': 4},
-                    {'key': 'RCtrl', 'row': 5, 'col': 41, 'width': 5},
-                    {'key': '←', 'row': 5, 'col': 54, 'width': 3},
-                    {'key': '↓', 'row': 5, 'col': 57, 'width': 3},
-                    {'key': '→', 'row': 5, 'col': 60, 'width': 3},],
+                   {'key': 'J', 'row': 3, 'col': 23, 'width': 3},
+                   {'key': 'K', 'row': 3, 'col': 26, 'width': 3},
+                   {'key': 'L', 'row': 3, 'col': 29, 'width': 3},
+                   {'key': ';', 'row': 3, 'col': 32, 'width': 3},
+                   {'key': "'", 'row': 3, 'col': 35, 'width': 3},
+                   {'key': 'Enter', 'row': 3, 'col': 38, 'width': 9},
+                   {'key': 'Shift', 'row': 4, 'col': 0, 'width': 7},
+                   {'key': 'Z', 'row': 4, 'col': 7, 'width': 3},
+                   {'key': 'X', 'row': 4, 'col': 10, 'width': 3},
+                   {'key': 'C', 'row': 4, 'col': 13, 'width': 3},
+                   {'key': 'V', 'row': 4, 'col': 16, 'width': 3},
+                   {'key': 'B', 'row': 4, 'col': 19, 'width': 3},
+                   {'key': 'N', 'row': 4, 'col': 22, 'width': 3},
+                   {'key': 'M', 'row': 4, 'col': 25, 'width': 3},
+                   {'key': ',', 'row': 4, 'col': 28, 'width': 3},
+                   {'key': '.', 'row': 4, 'col': 31, 'width': 3},
+                   {'key': '/', 'row': 4, 'col': 34, 'width': 3},
+                   {'key': 'RShift', 'row': 4, 'col': 37, 'width': 10},
+                   {'key': '↑', 'row': 4, 'col': 57, 'width': 3},
+                   {'key': 'Ctrl', 'row': 5, 'col': 0, 'width': 4},
+                   {'key': 'Win', 'row': 5, 'col': 4, 'width': 4},
+                   {'key': 'Alt', 'row': 5, 'col': 8, 'width': 4},
+                   {'key': 'Space', 'row': 5, 'col': 12, 'width': 20},
+                   {'key': 'RAlt', 'row': 5, 'col': 31, 'width': 3},
+                   {'key': 'Fn', 'row': 5, 'col': 38, 'width': 3},
+                   {'key': 'Menu', 'row': 5, 'col': 34, 'width': 4},
+                   {'key': 'RCtrl', 'row': 5, 'col': 41, 'width': 5},
+                   {'key': '←', 'row': 5, 'col': 54, 'width': 3},
+                   {'key': '↓', 'row': 5, 'col': 57, 'width': 3},
+                   {'key': '→', 'row': 5, 'col': 60, 'width': 3}, ],
             "100": [{'key': 'Esc', 'row': 0, 'col': 0, 'width': 3},
                     {'key': 'F1', 'row': 0, 'col': 4, 'width': 3},
                     {'key': 'F2', 'row': 0, 'col': 7, 'width': 3},
@@ -341,6 +376,7 @@ class KeyboardApp:
                     {'key': '0', 'row': 1, 'col': 30, 'width': 3},
                     {'key': '-', 'row': 1, 'col': 33, 'width': 3},
                     {'key': '=', 'row': 1, 'col': 36, 'width': 3},
+
                     {'key': '⌫', 'row': 1, 'col': 39, 'width': 8},
                     {'key': 'Insert', 'row': 1, 'col': 52, 'width': 5},
                     {'key': 'Home', 'row': 1, 'col': 57, 'width': 5},
@@ -399,28 +435,30 @@ class KeyboardApp:
                     {'key': '←', 'row': 5, 'col': 54, 'width': 3},
                     {'key': '↓', 'row': 5, 'col': 57, 'width': 3},
                     {'key': '→', 'row': 5, 'col': 60, 'width': 3},
-                    {'key': 'Num', 'row': 1, 'col': 72, 'width': 3},
-                    {'key': '/', 'row': 1, 'col': 75, 'width': 3},
-                    {'key': '*', 'row': 1, 'col': 78, 'width': 3},
-                    {'key': '-', 'row': 1, 'col': 81, 'width': 3},
-                    {'key': '7', 'row': 2, 'col': 72, 'width': 3},
-                    {'key': '8', 'row': 2, 'col': 75, 'width': 3},
-                    {'key': '9', 'row': 2, 'col': 78, 'width': 3},
-                    {'key': '+', 'row': 2, 'col': 81, 'width': 3, 'pady': 4},
-                    {'key': '4', 'row': 3, 'col': 72, 'width': 3},
-                    {'key': '5', 'row': 3, 'col': 75, 'width': 3},
-                    {'key': '6', 'row': 3, 'col': 78, 'width': 3},
-                    {'key': '1', 'row': 4, 'col': 72, 'width': 3},
-                    {'key': '2', 'row': 4, 'col': 75, 'width': 3},
-                    {'key': '3', 'row': 4, 'col': 78, 'width': 3},
-                    {'key': 'Ent', 'row': 4, 'col': 81, 'width': 3, 'pady': 4},
-                    {'key': '0', 'row': 5, 'col': 71, 'width': 7},
-                    {'key': '.', 'row': 5, 'col': 78, 'width': 3},]
+
+
+                    {'key': '7', 'row': 2, 'col': 74, 'width': 3},
+                    {'key': '8', 'row': 2, 'col': 77, 'width': 3},
+                    {'key': '9', 'row': 2, 'col': 80, 'width': 3},
+                    {'key': 'Lock', 'row': 1, 'col': 74, 'width': 3},
+                    {'key': '/', 'row': 1, 'col': 77, 'width': 3},
+                    {'key': '4', 'row': 3, 'col': 74, 'width': 3},
+                    {'key': '5', 'row': 3, 'col': 77, 'width': 3},
+                    {'key': '6', 'row': 3, 'col': 80, 'width': 3},
+                    {'key': '*', 'row': 1, 'col': 80, 'width': 3},
+                    {'key': '1', 'row': 4, 'col': 74, 'width': 3},
+                    {'key': '2', 'row': 4, 'col': 77, 'width': 3},
+                    {'key': '3', 'row': 4, 'col': 80, 'width': 3},
+                    {'key': '0', 'row': 5, 'col': 74, 'width': 6, 'height': 2},
+                    {'key': '.', 'row': 5, 'col': 80, 'width': 3},
+                    {'key': '+', 'row': 2, 'col': 83, 'width': 3},
+                    ]
         }
-        return layouts[layout_percentage]
+        return layouts.get(layout_percentage, [])
 
 
 if __name__ == "__main__":
     root = tk.Tk()
+    root.bind("<KeyPress>", key_press)
     app = KeyboardApp(root)
     root.mainloop()
